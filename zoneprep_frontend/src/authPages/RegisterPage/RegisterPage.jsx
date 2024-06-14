@@ -4,8 +4,12 @@ import { Typography } from '@mui/material'
 import RegisterPageInputs from './RegisterPageInputs'
 import RegisterPageFooter from './RegisterPageFooter'
 import {validateRegisterForm} from '../../shared/utils/validator'
+import {connect} from 'react-redux'
+import {getActions} from '../../store/actions/authActions'
+import {useNavigate} from 'react-router-dom'
 
-export default function RegisterPage() {
+const  RegisterPage = ({register}) => {
+  const history = useNavigate()
   const [registration_no, setRegistration_no] = useState('')
   const [password, setPassword] = useState('')
   const [mail, setMail] = useState('')
@@ -14,10 +18,14 @@ export default function RegisterPage() {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const handleRegister = ()=>{
-    console.log('registration_no ', registration_no)
-    console.log('password ',password)
-    console.log('mail ',mail)
-    console.log('username ',username)
+    const userDetails = {
+      registration_no,
+      password,
+      mail,
+      username
+    }
+    register(userDetails, history)
+   
   }
 
   useEffect(()=>{
@@ -47,3 +55,11 @@ export default function RegisterPage() {
     </AuthBox>
   )
 }
+
+const mapActionsToProps = (dispatch) => {
+  return{
+    ...getActions(dispatch)
+  }
+}
+
+export default connect(null, mapActionsToProps)(RegisterPage);       //this makes sure that the actions are available in the props of the componenet

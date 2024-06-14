@@ -5,8 +5,12 @@ import LoginPageHeader from './LoginPageHeader'
 import LoginPageInputs from './LoginPageInputs'
 import LoginPageFooter from './LoginPageFooter'
 import {validateLoginForm} from '../../shared/utils/validator'
+import {connect} from 'react-redux'
+import {getActions} from '../../store/actions/authActions'
+import { useNavigate } from 'react-router-dom'
 
-export default function LoginPage() {
+const LoginPage = ({login}) => {
+  const history = useNavigate()
   const [registration_no, setRegistration_no] = useState('')
   const [password, setPassword] = useState('')
   const [isFormValid, setIsFormValid] = useState(false);
@@ -17,9 +21,11 @@ export default function LoginPage() {
   }, [registration_no, password, setIsFormValid])
 
   const handleLogin = () => {
-    console.log('registration_no', registration_no)
-    console.log('password', password)
-    console.log('login clicked')
+    const userDetails = {
+      registration_no,
+      password
+    }
+    login(userDetails, history)
 
   }
 
@@ -36,3 +42,13 @@ export default function LoginPage() {
     </AuthBox>
   )
 }
+
+const mapActionsToProps = (dispatch) => {
+  return{
+    ...getActions(dispatch)
+  }
+}
+
+export default connect(null, mapActionsToProps)(LoginPage);       //this makes sure that the actions are available in the props of the componenet
+
+
