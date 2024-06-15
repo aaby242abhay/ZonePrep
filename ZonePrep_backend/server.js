@@ -5,8 +5,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 const socketServer = require('./socketServer')
-
-
+const friendInvitationRoutes = require('./routes/friendInvitationRoutes')
 const authRoutes = require('./routes/authRoutes')
 
 const PORT = process.env.PORT || process.env.API_PORT;
@@ -17,6 +16,7 @@ app.use(cors());
 
 //registering the routes
 app.use('/api/auth', authRoutes);
+app.use('/api/friend-invitation', friendInvitationRoutes);
 
 const server =  http.createServer(app);
 socketServer.registerSocketServer(server);
