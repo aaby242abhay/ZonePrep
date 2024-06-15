@@ -1,9 +1,13 @@
 import React from 'react'
+import {useEffect} from 'react'
 import {styled} from '@mui/material/styles'
 import Sidebar from './SideBar/SideBar'
 import FriendsSideBar from './FriendsSideBar/FriendsSideBar'
 import Messenger from './Messenger/Messenger'
 import Appbar from './AppBar/AppBar'
+import {logout} from '../shared/utils/auth'
+import {connect} from 'react-redux'
+import {getActions} from '../store/actions/authActions'
 
 
 const Wrapper = styled('div')({
@@ -11,7 +15,17 @@ const Wrapper = styled('div')({
   height : '100vh',
   display : 'flex',
 })
-export default function DashBoard() {
+const   DashBoard = ({setUserDetails}) => {
+  useEffect(()=>{
+    const userDetails = localStorage.getItem('userDetails')
+    console.log(userDetails)
+    if(!userDetails){
+      logout();
+    }else{
+      setUserDetails(JSON.parse(userDetails))
+    }
+
+  }, [setUserDetails])
   return (
     <Wrapper>
       <Sidebar/>
@@ -21,3 +35,10 @@ export default function DashBoard() {
     </Wrapper>
   )
 }
+const mapActionsToProps = (dispatch) => {
+  return{
+    ...getActions(dispatch)
+  }
+}
+
+export default connect(null, mapActionsToProps)(DashBoard)

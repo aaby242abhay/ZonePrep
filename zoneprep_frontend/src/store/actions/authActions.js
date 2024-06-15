@@ -11,6 +11,7 @@ export const getActions = (dispatch) =>{
     return{
         login : (userDetails, history) => dispatch(login(userDetails, history)),
         register : (userDetails, history) => dispatch(register(userDetails, history)),
+        setUserDetails : (userDetails) => dispatch(setUserDetails(userDetails)),
     }
 }
 
@@ -28,7 +29,8 @@ const login = (userDetails, history) =>{
             dispatch(openAlertMessage(response?.exception?.response?.data))
         }else{
             const {userDetails} = response?.data;
-            localStorage.setItem('user', JSON.stringify(userDetails));
+            console.log(userDetails);
+            localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
             dispatch(setUserDetails(userDetails));
             history('/dashboard');

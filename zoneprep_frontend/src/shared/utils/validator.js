@@ -14,15 +14,15 @@ export const validateRegisterForm = (registration_no, password, mail, username) 
     return isRegistration_noValid && isPasswordValid && isMailValid && isUsernameValid;
 }
 
-const validateUsername = (username) => {
+export const validateUsername = (username) => {
     return username.length >= 4 && username.length <= 20;
 }
-const validateMail = (mail) => {
+export const validateMail = (mail) => {
     return mail.endsWith('@mnnit.ac.in');
 }
-const validatePassword = (password) => {
+export const validatePassword = (password) => {
     return password.length >= 8 && password.length <= 20;
 }
-const validateRegistration_no = (registration_no) => {
+export const validateRegistration_no = (registration_no) => {
     return registration_no.length === 8 && !isNaN(registration_no)
 }
