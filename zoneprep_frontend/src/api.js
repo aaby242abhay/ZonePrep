@@ -14,6 +14,7 @@ apiClient.interceptors.request.use((config) =>{
     }
     return config;
 },(err) =>{
+    checkResponseCode(err);                                     //this I have added by myself       
     return Promise.reject(err);
 })
 
