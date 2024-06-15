@@ -29,7 +29,6 @@ const login = (userDetails, history) =>{
             dispatch(openAlertMessage(response?.exception?.response?.data))
         }else{
             const {userDetails} = response?.data;
-            console.log(userDetails);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
             dispatch(setUserDetails(userDetails));

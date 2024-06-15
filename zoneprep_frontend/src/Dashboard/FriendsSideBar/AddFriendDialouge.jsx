@@ -9,18 +9,24 @@ import Typography from '@mui/material/Typography';
 import InputWithLabel from '../../shared/components/InputWithLabel'
 import CustomPrimaryButton from '../../shared/components/CustomPrimaryButton';
 import DialogActions from '@mui/material/DialogActions';
+import {connect} from 'react-redux'
+import {getActions} from '../../store/actions/friendsActions'
 
 
-export default function AddFriendDialouge({
+const AddFriendDialouge = ({
     isDialogOpen,
     closeDialogHandler,
     sendFriendInvitation = () => {}
-}) {
+    
+}) => {
 
     const [registration_no, setRegistration_no] = useState('');
     const [isFormValid, setIsFormValid] = useState('');
     const handleSendInvitation = () => {
-        //send friend req to server
+
+        sendFriendInvitation({
+            targetRegistration_no : registration_no
+        }, closeDialogHandler);
     }
     const handleCloseDialog = () =>{
         closeDialogHandler();
@@ -66,3 +72,11 @@ export default function AddFriendDialouge({
     </>
   )
 }
+
+const mapActionsToProps = (dispatch) => {
+    return {
+        ...getActions(dispatch),
+    }
+}
+
+export default connect(null, mapActionsToProps)(AddFriendDialouge)

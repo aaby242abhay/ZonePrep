@@ -8,6 +8,7 @@ import Appbar from './AppBar/AppBar'
 import {logout} from '../shared/utils/auth'
 import {connect} from 'react-redux'
 import {getActions} from '../store/actions/authActions'
+import { connectWithSocketServer } from '../realtimeCommunication/socketConnection'
 
 
 const Wrapper = styled('div')({
@@ -18,12 +19,13 @@ const Wrapper = styled('div')({
 const   DashBoard = ({setUserDetails}) => {
   useEffect(()=>{
     const userDetails = localStorage.getItem('userDetails')
-    console.log(userDetails)
     if(!userDetails){
       logout();
     }else{
       setUserDetails(JSON.parse(userDetails))
+      connectWithSocketServer(JSON.parse(userDetails));
     }
+    
 
   }, [setUserDetails])
   return (

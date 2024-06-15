@@ -7,14 +7,13 @@ const apiClient = axios.create({
 })
 
 apiClient.interceptors.request.use((config) =>{
-    const userDetail = localStorage.getItem('userDetail');
+    const userDetail = localStorage.getItem('userDetails');
     if(userDetail){                                             //we are storing the userDetail in local storage of the browser while login
         const token = JSON.parse(userDetail).token;             //we are getting back the token from the userDetail from the local storage in every request
         config.headers.Authorization = `Bearer ${token}`;       //and we are sending the token with the request
     }
     return config;
-},(err) =>{
-    checkResponseCode(err);                                     //this I have added by myself       
+},(err) =>{ 
     console.log(err);
     return Promise.reject(err);
 })
@@ -46,6 +45,19 @@ export const register = async (data) => {
 }
 
 //secure routes
+export const sendFriendInvitation = async (data) => {
+    try{
+        return await apiClient.post('/friend-invitation/invite', data);
+    } catch(exception){
+        checkResponseCode(exception)
+        return {
+            error : true,
+            exception
+        }
+    }
+}
+
+
 const checkResponseCode = (exception)=>{
     const responseCode = exception?.response?.status;
     if(responseCode){
