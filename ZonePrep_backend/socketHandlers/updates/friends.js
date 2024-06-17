@@ -25,4 +25,40 @@ updateFriendsPendingInvitations = async (userId) => {
     }
 }
 
-module.exports = {updateFriendsPendingInvitations}
+const updateFriends = async (userId) => {
+    try{
+        //find if user of the specific userId has an active connection or not in our connectedUsers Map()
+        const recieverList = serverStore.getActiveConnections(userId);
+        console.log('------here------');
+
+        if(recieverList.length > 0){
+            const user = await User.findById(userId, {_id : 1, friends : 1}).populate(              //finding the user with the specific userId
+            'friends',                                                                              //only taking its id and the friends array
+            '_id username registration_no'                                                          //populating the friends array with only id, username and registration_no
+            )
+            let friendsList = [];
+            if(user){
+                friendsList = user.friends.map( (f) =>{
+                    return {
+                        id : f._id,
+                        registration_no : f.registration_no,
+                        username : f.username,
+                    }
+                })
+            }
+            //getting the io instance from the serverStore
+            const io = serverStore.getSocketServerInstance();
+            recieverList.forEach((recieverSocketId) =>{
+                io.to(recieverSocketId).emit('friends-list',{
+                    friends : friendsList? friendsList : []
+                })
+            })
+        }
+
+       
+    }catch(err){
+        console.log(err);
+    }
+}
+
+module.exports = {updateFriendsPendingInvitations, updateFriends}

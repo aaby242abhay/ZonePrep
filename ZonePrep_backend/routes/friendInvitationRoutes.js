@@ -9,6 +9,14 @@ const postInvitationSchema = Joi.object({
     targetRegistration_no : Joi.string().length(8).pattern(/^[0-9]+$/),
 })
 
+const inviteDecisionSchema = Joi.object({
+    id : Joi.string().required(),
+})
+
 router.post('/invite',auth,validator.body(postInvitationSchema), friendInvitationControllers.controllers.postInvite);
+
+router.post('/accept', auth, validator.body(inviteDecisionSchema), friendInvitationControllers.controllers.postAccept);
+
+router.post('/reject', auth, validator.body(inviteDecisionSchema), friendInvitationControllers.controllers.postReject);
 
 module.exports = router;
