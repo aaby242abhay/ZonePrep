@@ -29,7 +29,6 @@ const updateFriends = async (userId) => {
     try{
         //find if user of the specific userId has an active connection or not in our connectedUsers Map()
         const recieverList = serverStore.getActiveConnections(userId);
-        console.log('------here------');
 
         if(recieverList.length > 0){
             const user = await User.findById(userId, {_id : 1, friends : 1}).populate(              //finding the user with the specific userId
