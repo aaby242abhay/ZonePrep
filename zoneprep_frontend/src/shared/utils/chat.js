@@ -6,7 +6,10 @@ export const updateDirectChatHistoryIfActive = (data) =>{
 
     //now finding id of user from token and id from active conversation
     const recieverId = store.getState().chat.chosenChatDetails?.id;
-    const userId = store.getState().auth.user._id;
+    const userId = store.getState().auth.userDetails._id;
+
+    console.log('recieverId', recieverId);
+    console.log('userId', userId);
 
     if(userId && recieverId){
         const usersInConversation = [recieverId, userId];
