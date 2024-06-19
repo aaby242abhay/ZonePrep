@@ -34,6 +34,12 @@ export const connectWithSocketServer = (userDetails) =>{
         updateDirectChatHistoryIfActive(data);
 
     });
+
+    socket.on('room-create', (data) =>{
+        console.log('Room created came from the server:--->', data);
+        roomHandler.newRoomCreated(data);
+    
+    })
 }
 
 export const sendDirectMessage = (data) =>{
@@ -47,4 +53,8 @@ export const getDirectChatHistory = (data) =>{
         socket.emit('direct-chat-history', data);
         console.log('I came here_2');
     }
+}
+
+export const createNewRoom = () =>{
+    socket.emit('room-create');
 }
