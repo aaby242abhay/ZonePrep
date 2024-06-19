@@ -1,4 +1,8 @@
+const {v4 : uuidv4} = require('uuid'); 
+
 const connectedUsers  = new Map();
+let activeRooms = [];
+
 
 let io = null;
 const setSocketServerInstance = (ioInstance) =>{
@@ -42,4 +46,27 @@ const getOnlineUsers = () => {
 
 }
 
-module.exports = {addNewConnectedUser, removeConnectedUser, getActiveConnections, setSocketServerInstance, getSocketServerInstance, getOnlineUsers};
+//rooms
+const addNewActiveRoom = (userId, socketId) =>{
+    const newActiveRoom = {
+        roomCreator : {
+            userId, 
+            socketId
+        },
+        participants : [
+            {   
+                userId,
+                socketId
+            }
+        ],
+        roomId : uuidv4()
+    }
+    activeRooms.push([...activeRooms, newActiveRoom]);
+    console.log('new active rooms----->', activeRooms);
+    return newActiveRoom;
+
+}
+
+module.exports = {addNewConnectedUser, removeConnectedUser, getActiveConnections, setSocketServerInstance, getSocketServerInstance, getOnlineUsers,
+    addNewActiveRoom
+};
