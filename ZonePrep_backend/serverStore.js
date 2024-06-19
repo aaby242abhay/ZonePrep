@@ -61,12 +61,45 @@ const addNewActiveRoom = (userId, socketId) =>{
         ],
         roomId : uuidv4()
     }
-    activeRooms.push([...activeRooms, newActiveRoom]);
+    activeRooms.push(newActiveRoom);
     console.log('new active rooms----->', activeRooms);
     return newActiveRoom;
+}
+
+const getActiveRooms = () =>{
+    return [...activeRooms];
+}
+const getActiveRoom = (roomId) => {
+    const activeRoom = activeRooms.find(activeRoom => activeRoom.roomId === roomId);
+    return {
+        ...activeRoom               //returning the copy of the active room
+    };
 
 }
 
-module.exports = {addNewConnectedUser, removeConnectedUser, getActiveConnections, setSocketServerInstance, getSocketServerInstance, getOnlineUsers,
-    addNewActiveRoom
+const joinActiveRoom = (roomId, newParticipant) =>{
+    const room = activeRooms.find(room => room.roomId === roomId);
+    activeRooms = activeRooms.filter(room => room.roomId !== roomId);
+
+    const updatedRoom = {
+        ...room,
+        participants : [...room.participants, newParticipant]
+    }
+
+    activeRooms.push(updatedRoom);
+    console.log('updated active rooms after joining----->', activeRooms);
+
+}
+
+module.exports = {
+    addNewConnectedUser, 
+    removeConnectedUser, 
+    getActiveConnections, 
+    setSocketServerInstance, 
+    getSocketServerInstance, 
+    getOnlineUsers,
+    addNewActiveRoom,
+    getActiveRooms,
+    getActiveRoom,
+    joinActiveRoom
 };
