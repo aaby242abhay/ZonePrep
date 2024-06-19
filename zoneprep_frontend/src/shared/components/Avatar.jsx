@@ -13,7 +13,7 @@ const AvatarPreview = styled('div')
     justifyContent : 'center',
     fontSize : '16px',
     fontWeight : '800',
-    marginLeft : '10px',
+    marginLeft : '2px',
     color : 'white',
 
 })

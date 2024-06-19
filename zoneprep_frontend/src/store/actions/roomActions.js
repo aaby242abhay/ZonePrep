@@ -23,3 +23,10 @@ export const setRoomDetails = (roomDetails) =>{
         roomDetails
     }
 }
+
+export const setActiveRooms = (activeRooms) =>{
+    return {
+        type : roomActions.SET_ACTIVE_ROOMS,
+        activeRooms
+    }
+}

@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import {setPendingFriendInvitations, setFriends, setOnlineUsers} from '../store/actions/friendsActions';
 import store from '../store/store';
 import {updateDirectChatHistoryIfActive} from '../shared/utils/chat';
+import * as roomHandler from './roomHandler';
 
 let socket = null;
 export const connectWithSocketServer = (userDetails) =>{
@@ -40,6 +41,11 @@ export const connectWithSocketServer = (userDetails) =>{
         roomHandler.newRoomCreated(data);
     
     })
+
+    socket.on('active-rooms', (data) =>{
+        console.log('^^^^^^^we need to call updateActiveRooms here^^^^^^^')
+        roomHandler.updateActiveRooms(data);
+    })
 }
 
 export const sendDirectMessage = (data) =>{
@@ -57,4 +63,8 @@ export const getDirectChatHistory = (data) =>{
 
 export const createNewRoom = () =>{
     socket.emit('room-create');
+}
+
+export const joinRoom = (data) =>{
+    socket.emit('room-join', data);
 }
