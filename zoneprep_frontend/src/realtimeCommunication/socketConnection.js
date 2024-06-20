@@ -3,6 +3,7 @@ import {setPendingFriendInvitations, setFriends, setOnlineUsers} from '../store/
 import store from '../store/store';
 import {updateDirectChatHistoryIfActive} from '../shared/utils/chat';
 import * as roomHandler from './roomHandler';
+import * as webRTCHandler from './webRTCHandler';
 
 let socket = null;
 export const connectWithSocketServer = (userDetails) =>{
@@ -46,6 +47,32 @@ export const connectWithSocketServer = (userDetails) =>{
         console.log('^^^^^^^we need to call updateActiveRooms here^^^^^^^')
         roomHandler.updateActiveRooms(data);
     })
+
+    socket.on('conn-prepare', (data) =>{
+        console.log('&&&&&&&-------- preparing for connection ------&&&&&', data); 
+        const { connUserSocketId} = data;
+        webRTCHandler.prepareNewPeerConnection(connUserSocketId, false);        //preparing for connection should be on the passive side
+
+        socket.emit('conn-init', {connUserSocketId : connUserSocketId})         //initialize connection to all the users who have prepared for the connection
+
+    })
+
+    socket.on('conn-init', (data) =>{
+        const {connUserSocketId} = data;
+        webRTCHandler.prepareNewPeerConnection(connUserSocketId, true);         
+    })
+
+
+    socket.on('conn-signal', (data) =>{
+        webRTCHandler.handleSignalingData(data);
+
+    })
+
+    socket.on('room-participant-left', (data) =>{
+        console.log('user left room');
+
+        webRTCHandler.handleParticipantLeftRoom(data);
+    })
 }
 
 export const sendDirectMessage = (data) =>{
@@ -72,3 +99,8 @@ export const joinRoom = (data) =>{
 export const leaveRoom = (data) =>{
     socket.emit('room-leave', data);
 }
+
+export const signalPeerData = (data) =>{
+    socket.emit('conn-signal', data);
+}
+

@@ -46,6 +46,13 @@ export const setLocalStream = (localStream) =>{
     }
 }
 
+export const setRemoteStreams = (remoteStreams) =>{
+    return{
+        type : roomActions.SET_REMOTE_STREAM,
+        remoteStreams
+    }
+}
+
 export const setAudioOnly  = (audioOnly) => {
     return {
         type : roomActions.SET_AUDIO_ONLY,

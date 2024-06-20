@@ -71,9 +71,12 @@ const getActiveRooms = () =>{
 }
 const getActiveRoom = (roomId) => {
     const activeRoom = activeRooms.find(activeRoom => activeRoom.roomId === roomId);
-    return {
-        ...activeRoom               //returning the copy of the active room
-    };
+    
+    if(activeRoom){
+        return {
+            ...activeRoom               //returning the copy of the active room
+        };  
+    } else return null;
 
 }
 
