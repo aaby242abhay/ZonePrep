@@ -2,8 +2,7 @@ import axios from 'axios';
 import { logout } from './shared/utils/auth';
 
 const apiClient = axios.create({
-    baseURL : 'https://zone-prep.vercel.app/api',
-    timeout : 1000
+    baseURL : 'https://zone-prep.vercel.app/api'
 })
 
 apiClient.interceptors.request.use((config) =>{
