@@ -2,7 +2,7 @@ import axios from 'axios';
 import { logout } from './shared/utils/auth';
 
 const apiClient = axios.create({
-    baseURL : 'http://localhost:5002/api',
+    baseURL : 'https://zone-prep.vercel.app/api',
     timeout : 1000
 })
 
