@@ -8,7 +8,7 @@ import * as webRTCHandler from './webRTCHandler';
 let socket = null;
 export const connectWithSocketServer = (userDetails) =>{
     const jwtToken = userDetails.token;
-    socket = io('https://zone-prep.vercel.app',{
+    socket = io('http://localhost:8080',{
         auth : {
             token : jwtToken,
         }

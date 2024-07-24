@@ -1,9 +1,15 @@
 import axios from 'axios';
 import { logout } from './shared/utils/auth';
 
+const config = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+    }
+};
 const apiClient = axios.create({
-    baseURL : 'https://zone-prep.vercel.app/api'
-})
+    baseURL : 'http://localhost:8080/api',
+},config)
 
 apiClient.interceptors.request.use((config) =>{
     const userDetail = localStorage.getItem('userDetails');

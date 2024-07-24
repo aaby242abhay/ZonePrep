@@ -117,13 +117,14 @@ export const handleParticipantLeftRoom = (data) =>{
     console.log('****in handleParticipantLeftRoom**');
     const {connUserSocketId} = data;
     if(peers[connUserSocketId]){                        //deleting the peer from the map    
-        // try{
-        //     peers[connUserSocketId].destroy();              //destroying the webRTC connection
-        //     delete peers[connUserSocketId];                 //this is done on the client side for all the users who are still connected in
-        // }catch(err){
-        //     console.log("Error in webRTC handler------->");
-        //     console.log(err);
-        // }
+        try{
+            peers[connUserSocketId].destroy();              //destroying the webRTC connection
+            delete peers[connUserSocketId];                 //this is done on the client side for all the users who are still connected in
+        }catch(err){
+            console.log("Error in webRTC handler------->");
+            console.log(err);
+        }
+
     }
 
     const remoteStreams = store.getState().room.remoteStreams;
@@ -132,4 +133,24 @@ export const handleParticipantLeftRoom = (data) =>{
     );
 
     store.dispatch(setRemoteStreams(newRemoteStreams));
+}
+
+export const switchOutgoingTracks = (stream) =>{
+    for(let socket_id in peers){
+        for(let index in peers[socket_id].streams[0].getTracks()){
+            for(let index2 in stream.getTracks()){
+                if(
+                    peers[socket_id].streams[0].getTracks()[index].kind === stream.getTracks()[index2].kind
+                ){
+                    peers[socket_id].replaceTrack(
+                        peers[socket_id].streams[0].getTracks()[index],
+                        stream.getTracks()[index2],
+                        peers[socket_id].streams[0]
+                    );
+                    break;
+                }
+            }
+
+        }
+    }
 }

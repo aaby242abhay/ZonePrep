@@ -4,13 +4,14 @@ import * as roomHandler from '../../realtimeCommunication/roomHandler'
 
 import React from 'react'
 
-export default function CreateRoomButton() {
+export default function CreateRoomButton(isUserInRoom) {
     const createNewRoomHandler = () =>{
         //creating a new room and sending the info to the server about this
         roomHandler.createNewRoom();
     }
   return (
     <Button
+        // disabled = {!isUserInRoom}
         onClick = {createNewRoomHandler}
         style = {{
             width : '48px',
