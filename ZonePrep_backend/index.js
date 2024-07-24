@@ -3,6 +3,7 @@ const http = require('http')
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
+const User = require('./models/users')
 
 const socketServer = require('./socketServer')
 const friendInvitationRoutes = require('./routes/friendInvitationRoutes')
@@ -21,6 +22,21 @@ app.use('/api/friend-invitation', friendInvitationRoutes);
 const server =  http.createServer(app);
 socketServer.registerSocketServer(server);
 
+const abc = async ()=>{
+    try {
+        const registration_no = "20214220"; // Ensure this is a string
+        console.log(`Searching for user with registration_no: ${registration_no}`);
+        
+        const user = await User.findOne({ registration_no });
+        if (!user) {
+            console.log(`User with registration_no ${registration_no} not found.`);
+        } else {
+            console.log('User found:', user);
+        }
+    } catch (error) {
+        console.error('Error fetching user:', error);
+    }
+}
 
 
 mongoose.connect(process.env.MONGO_URI)
@@ -29,7 +45,7 @@ mongoose.connect(process.env.MONGO_URI)
     server.listen(PORT, ()=>{
         console.log( `Server is listening on port ${PORT}....`);
     })
-})  
+}).then(abc) 
 .catch((err)=>{
     console.log("Database connection failed! Server not started!")
     console.log(err);
