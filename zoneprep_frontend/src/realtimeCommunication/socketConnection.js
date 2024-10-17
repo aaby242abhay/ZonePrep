@@ -8,7 +8,7 @@ import * as webRTCHandler from './webRTCHandler';
 let socket = null;
 export const connectWithSocketServer = (userDetails) =>{
     const jwtToken = userDetails.token;
-    socket = io('http://localhost:8080',{
+    socket = io(process.env.REACT_APP_SOCKET_URL,{
         auth : {
             token : jwtToken,
         }
